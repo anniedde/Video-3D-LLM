@@ -5,6 +5,8 @@
     <img src="https://img.shields.io/badge/Video--3D_LLM-ArXiv-red" alt="Paper arXiv"></a>
     <a href="https://huggingface.co/datasets/zd11024/Video-3D-LLM_data" target="_blank">
     <img src="https://img.shields.io/badge/Video--3D_LLM-data-blue" alt="Paper arXiv"></a>
+    <a href="https://huggingface.co/zd11024/Video3D-LLM-LLaVA-Qwen-Uniform-32" target="_blank">
+    <img src="https://img.shields.io/badge/Video--3D_LLM-model-orange" alt="Paper arXiv"></a>
 </div>
 
 <div align="center" margin-bottom="3em">
@@ -31,6 +33,7 @@ The rapid advancement of Multimodal Large Language Models (MLLMs) has significan
 To address this issue, in this paper, we propose a novel generalist model, i.e., Video-3D LLM, for 3D scene understanding. By treating 3D scenes as dynamic videos and incorporating 3D position encoding into these representations, our Video-3D LLM aligns video representations with real-world spatial contexts more accurately. Additionally, we have implemented a maximum coverage sampling technique to optimize the balance between computational costs and performance efficiency. Extensive experiments demonstrate that our model achieves state-of-the-art performance on several 3D scene understanding benchmarks, including ScanRefer, Multi3DRefer, Scan2Cap, ScanQA, and SQA3D.
 
 ## News
+- [2025-3-4] We release the checkpoint of [Video-3D LLM](https://huggingface.co/zd11024/Video3D-LLM-LLaVA-Qwen-Uniform-32).
 - [2025-2-27] Our paper is accepted to CVPR 2025.
 - [2024-12-11] We release the processed data of [Video-3D LLM](https://huggingface.co/datasets/zd11024/Video-3D-LLM_data).
 - [2024-12-3] We release the paper of [Video-3D LLM](https://arxiv.org/abs/2412.00493).
@@ -40,7 +43,7 @@ To address this issue, in this paper, we propose a novel generalist model, i.e.,
 - \[x\] Release the training code.
 - \[x\] Release the evaluation script.
 - \[x\] Release the processed data.
-- \[ \] Release the model checkpoint.
+- \[x\] Release the model checkpoint.
 
 ## Installation
 1. Clone this repository and navigate to the Video-3D-LLM:
@@ -69,9 +72,19 @@ The option `frame_sampling_strategy` in `train_multi.sh` should be set to one of
 sh scripts/3d/train/train_multi.sh
 ```
 
-### Inference
+### Evaluation
+Evaluate model performance with specified checkpoint and frame sampling strategy.
 ```bash
-# example: sh scripts/3d/eval/eval_scan2cap.sh $CKPT uniform 32
+# Usage: sh scripts/3d/eval/eval_scan2cap.sh <CKPT_NAME> <SAMPLING_STRATEGY> <MAX_FRAMES>
+# Parameters:
+#   CKPT_NAME:           Path to model checkpoint for evaluation
+#   SAMPLING_STRATEGY:   Frame sampling strategy (options: uniform, ratio90, ratio95)
+#     - uniform:         Uniform frame sampling (equally spaced frames)
+#     - ratio90:         Adaptive sampling until covering 90% of scene voxels
+#     - ratio95:         Adaptive sampling until covering 95% of scene voxels
+#   MAX_FRAMES:          Maximum number of frames to use (upper sampling limit)
+# Note: Sampling strategies work consistently across tasks. For example:
+#   sh scripts/3d/eval/eval_scan2cap.sh $CKPT uniform 32
 sh scripts/3d/eval/eval_scan2cap.sh $CKPT_NAME $SAMPLING_STRATEGY $MAX_FRAMES   
 ```
 
