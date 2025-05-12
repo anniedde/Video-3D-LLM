@@ -1,5 +1,3 @@
-
-
 """
 Refer to https://github.com/embodied-generalist/embodied-generalist/blob/main/data/datasets.py
 
@@ -61,6 +59,7 @@ def main(args):
         voxel_size=args.voxel_size,
         min_xyz_range=None,
         max_xyz_range=None,
+        load_embodiedscan=False,
     )
 
     scan2pcd = {}

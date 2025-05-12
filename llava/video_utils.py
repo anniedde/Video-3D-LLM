@@ -78,6 +78,7 @@ class VideoProcessor:
         max_xyz_range=None,
         frame_sampling_strategy='uniform',
         val_box_type='pred',
+        load_embodiedscan=True,
     ):
         self.video_folder = video_folder
         self.voxel_size = voxel_size
@@ -87,13 +88,17 @@ class VideoProcessor:
         self.scene = {}
         print('============frame sampling strategy: {}============='.format(self.frame_sampling_strategy))
 
-        for split in ["train", "val", "test"]:
-            with open(os.path.join(annotation_dir, f"embodiedscan_infos_{split}.pkl"), "rb") as f:
-                data = pickle.load(f)["data_list"]
-                for item in data:
-                    # item["sample_idx"]: "scannet/scene0415_00"
-                    if item["sample_idx"].startswith("scannet"):
-                        self.scene[item["sample_idx"]] = item
+        if load_embodiedscan:
+            try:
+                for split in ["train", "val", "test"]:
+                    with open(os.path.join(annotation_dir, f"embodiedscan_infos_{split}.pkl"), "rb") as f:
+                        data = pickle.load(f)["data_list"]
+                        for item in data:
+                            if item["sample_idx"].startswith("scannet"):
+                                self.scene[item["sample_idx"]] = item
+            except FileNotFoundError:
+                print("Warning: EmbodiedScan data not found. Continuing without it.")
+                self.scene = {}
 
         self.scan2obj = {}
 

@@ -88,9 +88,9 @@ def main(args):
             voxel_nums.append(maxv)
             world_coords_discrete.pop(select_frame)
 
-            # if len(used_voxel) / len(all_voxel) >=  0.95:
-            #     break
-            if len(select_frame_files) >= 32:
+            #if len(used_voxel) / len(all_voxel) >=  0.95:
+            #    break
+            if len(select_frame_files) >= args.num_frames:
                 break
 
 
@@ -113,6 +113,7 @@ if __name__ == "__main__":
     parser.add_argument("--voxel_size", type=float, default=0.1)
     parser.add_argument("--video_dir", type=str, default="data/scannet/posed_images")
     parser.add_argument("--output_file", type=str, default="data/metadata/scannet_select_frames.json")
+    parser.add_argument("--num_frames", type=int, default=8, help="Number of frames to select for each scene")
     args = parser.parse_args()
     args.min_xyz_range = [-15, -15, -5]
     args.max_xyz_range = [15, 15, 5]
